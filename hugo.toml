@@ -1,0 +1,83 @@
+baseURL = 'https://100568265.github.io/watson.github.io/'
+languageCode = 'zh-cn'
+title = 'Watson 的技术笔记'
+theme = 'hugo-book'
+
+# 启用 emoji
+enableEmoji = true
+
+# 启用 Git 信息（显示最后更新时间）
+enableGitInfo = true
+
+# 每页文章数量
+paginate = 10
+
+[params]
+  # 书籍标题
+  BookTitle = 'Watson 的技术笔记'
+  
+  # 侧边栏显示层级
+  BookMenuDepth = 4
+  
+  # 启用目录
+  BookToC = true
+  
+  # 目录显示层级
+  BookToCDepth = 3
+  
+  # 启用搜索
+  BookSearch = true
+  
+  # 启用评论（可选）
+  BookComments = false
+  
+  # GitHub 编辑链接
+  BookRepo = 'https://github.com/100568265/watson.github.io'
+  BookEditPath = 'edit/main/content'
+  
+  # 显示源代码链接
+  BookSource = true
+  
+  # 日期格式
+  BookDateFormat = '2006-01-02'
+
+# 代码高亮配置
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ''
+    hl_inline = false
+    lineAnchors = ''
+    lineNoStart = 1
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = true
+    noHl = false
+    style = 'monokai'
+    tabWidth = 4
+    
+  [markup.goldmark.renderer]
+    unsafe = true
+
+  [markup.tableOfContents]
+    endLevel = 6
+    ordered = false
+    startLevel = 2
+
+# 菜单配置
+[menu]
+  [[menu.after]]
+    name = "GitHub"
+    url = "https://github.com/100568265"
+    weight = 10
+    
+  [[menu.after]]
+    name = "关于"
+    url = "/about"
+    weight = 20
+
+# 输出格式
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
