@@ -15,6 +15,8 @@ paginate = 10
 [params]
   # 书籍标题
   BookTitle = 'Watson 的技术笔记'
+
+  BookLogo = 'images/logo.png'
   
   # 侧边栏显示层级
   BookMenuDepth = 4
@@ -29,7 +31,7 @@ paginate = 10
   BookSearch = true
   
   # 启用评论（可选）
-  BookComments = false
+  BookComments = true
   
   # GitHub 编辑链接
   BookRepo = 'https://github.com/100568265/watson.github.io'
@@ -55,7 +57,7 @@ paginate = 10
     lineNumbersInTable = true
     noClasses = true
     noHl = false
-    style = 'monokai'
+    style = 'github'
     tabWidth = 4
     
   [markup.goldmark.renderer]

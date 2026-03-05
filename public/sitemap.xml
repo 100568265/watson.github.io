@@ -2,7 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/watson.github.io/docs/linux/</loc>
+  </url><url>
+    <loc>http://localhost:1313/watson.github.io/docs/python/</loc>
+  </url><url>
+    <loc>http://localhost:1313/watson.github.io/docs/c&#43;&#43;/</loc>
+  </url><url>
+    <loc>http://localhost:1313/watson.github.io/docs/slam/</loc>
+  </url><url>
+    <loc>http://localhost:1313/watson.github.io/docs/math/</loc>
+  </url><url>
+    <loc>http://localhost:1313/watson.github.io/docs/third_party_libraries/eigen/</loc>
+  </url><url>
+    <loc>http://localhost:1313/watson.github.io/docs/third_party_libraries/</loc>
+  </url><url>
+    <loc>http://localhost:1313/watson.github.io/docs/third_party_libraries/eigen/eigen/</loc>
+  </url><url>
     <loc>http://localhost:1313/watson.github.io/categories/</loc>
+  </url><url>
+    <loc>http://localhost:1313/watson.github.io/docs/</loc>
   </url><url>
     <loc>http://localhost:1313/watson.github.io/tags/</loc>
   </url><url>
