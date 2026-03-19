@@ -2,6 +2,7 @@
 title: "4.2.四元数：旋转的优雅解法"
 weight: 2
 bookCollapseSection: true
+math: true
 ---
 
 # 四元数 (Quaternion)
@@ -199,3 +200,299 @@ $\mathbf{v\'}\_{\perp}=cos(\theta)\mathbf{v}\_{\perp}+sin(\theta)(u \times \math
 3D空间中任意一个$\mathbf{v\'}$沿着单位向量u旋转θ角度之后的$\mathbf{v\'}$为：
 
 $$ \mathbf{v\'}= \mathbf{v}\cos\theta + (\mathbf{u} \times \mathbf{v})\sin\theta + \mathbf{u}(\mathbf{u} \cdot \mathbf{v})(1 - \cos\theta) $$
+
+
+---
+
+
+
+## 5.四元数
+
+$q = a + bi + cj + dk，(a,b,c,d∈\mathbb{R})$
+
+其中，$i^2=j^2=k^2=ijk=-1$
+
+写成向量$q=\begin{bmatrix} a \\\ b \\\ c \\\ d \end{bmatrix}$
+
+分解成实部虚部$q=[s,v]，(v=\begin{bmatrix} x \\\ y \\\ z \end{bmatrix},s,x,y,z∈\mathbb{R})$
+
+
+### 运算定义
+定义只是类比复数进行衍生定义的结果，几何方式理解比较复杂，暂时只需要记住定义即可。
+
+#### 模长
+
+$||q||=\sqrt{a^2+b^2+c^2+d^2}$
+
+$||q||=\sqrt{s^2+||v||^2}=\sqrt{s^2+vv}，(v \cdot v=||v||^2)$
+
+
+
+#### 加减法
+
+实部加减实部，虚部加减虚部，没什么好说的。
+
+
+
+#### 标量乘法
+
+$sq=s(a + bi + cj + dk) = sa + sbi +scj + sdk$
+
+注意：四元数的标量乘法是遵守**交换律**的，也就是sq = qs
+
+
+
+#### 四元数乘法
+
+四元数的乘法**不遵守交换律**，一般情况下$q_1q_2≠q_2q_1$
+
+$$ \begin{aligned} q_1 q_2 &= (a + b\mathbf{i} + c\mathbf{j} + d\mathbf{k})(e + f\mathbf{i} + g\mathbf{j} + h\mathbf{k}) \\\        &= ae + af\mathbf{i} + ag\mathbf{j} + ah\mathbf{k} \\\        &\quad + be\mathbf{i} + bf\mathbf{i}^2 + bg\mathbf{ij} + bh\mathbf{ik} \\\        &\quad + ce\mathbf{j} + cf\mathbf{ji} + cg\mathbf{j}^2 + ch\mathbf{jk} \\\        &\quad + de\mathbf{k} + df\mathbf{ki} + dg\mathbf{kj} + dh\mathbf{k}^2 \\\       &= ae - bf - cg - dh \\\        &\quad + (af + be + ch - dg)\mathbf{i} \\\        &\quad + (ag + ce + df - bh)\mathbf{j} \\\        &\quad + (ah + de + bg - cf)\mathbf{k} \end{aligned} $$
+
+---
+
+
+
+## 6.四元数表示3D旋转
+
+我们可以用四元数表达对一个点的旋转。假设一个空间三维点$p=[x,y,z∈\mathbb{R}^3]$，以及一个由轴角n,θ指定的旋转，那么这个旋转的四元数形式为：
+
+$$ \begin{equation} \begin{split} q = \left[ \cos\frac{\theta}{2},\ n_x\sin\frac{\theta}{2},\ n_y\sin\frac{\theta}{2},\ n_z\sin\frac{\theta}{2} \right]^T \end{split} \end{equation} $$
+
+
+
+反之，我们亦可以从单位四元数中算出对应旋转轴与夹角
+
+$$ \begin{equation} \begin{split} \begin{cases} \theta = 2\cos^{-1} q_0  \\\  [n_x, n_y, n_z]^T = \dfrac{[q_1, q_2, q_3]^T}{\sin\frac{\theta}{2}} \end{cases} \end{split} \end{equation} $$
+
+
+
+三维点p经过旋转之后变为$p\'$。如果使用矩阵描述，那么有$p\'=Rp$。如果用四元数描述旋转，它们的关系如何来表达？
+
+首先，把三维空间点用一个虚四元数来描述：
+
+$$p=[0,x,y,z]=[0,\mathbf{v}]$$
+
+
+
+这相当于我们把**四元数的三个虚部与空间中的三个轴**相对应。然后，参照上面的公式，用四元数q表示这个旋转：
+
+$$q=[cos\frac{\theta}{2},nsin\frac{\theta}{2}]$$
+
+
+
+那么，旋转后的点$p\'$即可表示为这样的乘积：
+
+$$p\'=qpq^{-1}$$
+
+
+
+### 四元数到旋转矩阵的转换
+
+任意单位四元数描述了一个旋转，该旋转也可以用旋转矩阵或旋转向量描述。从旋转向量到四元数的方式已经在式(2)中给出。现在直接给出四元数到旋转矩阵的转换方式。
+
+设四元数$q=q_0+q_1i+q_2j+q_3k$，对应的旋转矩阵$\mathbf{R}$为：
+
+$$ \begin{equation} \begin{split} R =  \begin{bmatrix} 1 - 2q_2^2 - 2q_3^2 & 2q_1 q_2 + 2q_0 q_3 & 2q_1 q_3 - 2q_0 q_2 \\\ 2q_1 q_2 - 2q_0 q_3 & 1 - 2q_1^2 - 2q_3^2 & 2q_2 q_3 + 2q_0 q_1 \\\ 2q_1 q_3 + 2q_0 q_2 & 2q_2 q_3 - 2q_0 q_1 & 1 - 2q_1^2 - 2q_2^2 \end{bmatrix} \end{split} \end{equation} $$
+
+
+
+反之，由旋转矩阵到四元数的转换如下。假设矩阵为$\mathbf{R}={m_{ij},i,j∈ [1,2,3]}$，其对应的四元数$\mathbf{q}$由下式给出：
+
+$$ \begin{equation} \begin{split} q_0 &= \frac{\sqrt{\operatorname{tr}(R) + 1}}{2},\quad q_1 = \frac{m_{23} - m_{32}}{4q_0},\quad q_2 = \frac{m_{31} - m_{13}}{4q_0},\quad q_3 = \frac{m_{12} - m_{21}}{4q_0} \end{split} \end{equation} $$
+
+---
+
+
+
+## 7.实践：Eigen几何模块
+
+| 数学命名              | Eigen库结构           |
+| --------------------- | --------------------- |
+| 旋转矩阵（3 x 3）     | `Eigen::Matrix3d`     |
+| 旋转向量（3 x 1）     | `Eigen::AngleAxisd`   |
+| 欧拉角（3 x 1）       | `Eigen::Vector3d`     |
+| 四元数（4 x 1）       | `Eigen::Quaterniond`  |
+| 欧氏变换矩阵（4 x 4） | `Eigen::Isometry3d`   |
+| 仿射变换（4 x 4）     | `Eigen::Affine3d`     |
+| 射影变换（4 x 4）     | `Eigen::Projective3d` |
+
+
+
+```cpp
+// 引入Eigen核心模块（矩阵、向量）和几何模块（变换、旋转）
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+```
+
+
+
+**1.旋转向量 & 旋转矩阵**
+
+```cpp
+// 旋转矩阵（3×3）：初始化为单位矩阵（无旋转状态）
+Eigen::Matrix3d rotation_matrix = Eigen::Matrix3d::Identity();
+
+// 旋转向量（角轴 AngleAxis）：绕Z轴旋转45°（M_PI/4弧度）
+// 参数1：旋转角度（弧度），参数2：旋转轴单位向量
+Eigen::AngleAxisd rotation_vector(M_PI/4, Eigen::Vector3d(0,0,1));
+// 设置输出精度（保留3位小数，更易阅读）
+cout.precision(3);
+cout << "旋转矩阵 =\n" << rotation_vector.matrix() << endl;
+    
+// 旋转向量 → 旋转矩阵（通过toRotationMatrix()接口转换）
+rotation_matrix = rotation_vector.toRotationMatrix();
+```
+
+
+
+
+
+**2.旋转3D点**
+
+```cpp
+Eigen::Vector3d v(1,0,0);	// 定义一个原始3D点
+
+// 方法1：用旋转向量旋转点（Eigen重载了*运算符，直接计算）
+Eigen::Vector3d v_rotated = rotation_vector * v;
+cout << "(1,0,0) 经旋转向量旋转后 = " << v_rotated.transpose() << endl;
+
+// 方法2：用旋转矩阵旋转点（数学上就是 R * v）
+v_rotated = rotation_matrix * v;
+cout << "(1,0,0) 经旋转矩阵旋转后 = " << v_rotated.transpose() << endl;
+```
+
+
+
+**3.旋转矩阵&欧拉角**
+
+```cpp
+// 旋转矩阵 → 欧拉角（ZYX顺序，对应 yaw(偏航)、pitch(俯仰)、roll(滚转)）
+// eulerAngles(2,1,0) 对应 Z(2)、Y(1)、X(0) 轴顺序
+Eigen::Vector3d euler_angles = rotation_matrix.eulerAngles(2,1,0); 
+cout << "yaw(偏航) pitch(俯仰) roll(滚转) = " << euler_angles.transpose() << endl;
+```
+
+
+
+
+
+**4.欧式变换矩阵（旋转+平移）**
+
+`Eigen::Isometry3d` 是欧式变换的专用类，本质是4×4齐次矩阵
+
+```cpp
+Eigen::Isometry3d T = Eigen::Isometry3d::Identity();    // 初始化为单位矩阵（无旋转、无平移）
+T.rotate(rotation_vector);  // 给欧式变换设置旋转（用之前定义的旋转向量）
+T.pretranslate(Eigen::Vector3d(1,3,4)); // 设置平移向量 t = (1, 3, 4)
+cout << "欧式变换矩阵 T =\n" << T.matrix() << endl;
+```
+
+
+
+
+
+**5.用欧式变换矩阵变换3D点**
+
+```cpp
+// 对原始点v执行欧式变换：p' = R*p + t（Eigen自动处理齐次坐标，直接用*运算）
+Eigen::Vector3d v_transformed = T*v;  
+cout << "v 经欧式变换后 = " << v_transformed.transpose() << endl;
+```
+
+
+
+**6.四元数旋转3D点（最优旋转表示）**
+
+```cpp
+// 旋转向量 → 四元数（直接赋值即可，Eigen自动转换）
+Eigen::Quaterniond q = Eigen::Quaterniond(rotation_vector);
+cout << "四元数 q = \n" << q.coeffs() << endl; // 输出顺序：(x, y, z, w)，w为实部
+
+// 用四元数旋转3D点（数学原理：p' = q*p*q⁻¹，Eigen重载*运算符，直接调用）
+v_rotated = q*v;  
+cout << "(1,0,0) 经四元数旋转后 = " << v_rotated.transpose() << endl;
+```
+
+
+
+
+
+<details><summary>完整代码</summary>
+
+```cpp
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+
+int main(){
+    // 3D旋转矩阵直接使用Matrix3d或Matrix3f
+    Eigen::Matrix3d rotation_matrix = Eigen::Matrix3d::Identity();
+    std::cout << "!" << std::endl;
+    // 旋转向量使用AngleAxis，底层不直接是Matrix，但运算可以当作矩阵(运算符重载)
+    Eigen::AngleAxisd rotation_vector(M_PI/4,Eigen::Vector3d(0,0,1));   //沿着Z轴旋转45度
+    cout.precision(3);
+    cout << "rotation matrix =\n" << rotation_vector.matrix() << endl;
+    // 也可以这样
+    rotation_matrix = rotation_vector.toRotationMatrix();
+
+    // 用AngleAxis可以进行坐标变换
+    Eigen::Vector3d v(1,0,0);
+    Eigen::Vector3d v_rotated = rotation_vector * v;
+    cout << "(1,0,0) after rotation = " << v_rotated.transpose() << endl;
+
+    // 或者用旋转矩阵
+    v_rotated = rotation_matrix * v;
+    cout << "(1,0,0) after rotation = " << v_rotated.transpose() << endl;
+
+    // 欧拉角 <-> 旋转矩阵
+    Eigen::Vector3d euler_angles = rotation_matrix.eulerAngles(2,1,0); // ZYX顺序，yaw pitch roll
+    cout << "yaw pitch roll = " << euler_angles.transpose() << endl;
+
+    // 欧氏变换矩阵使用 Eigen::Isometry
+    Eigen::Isometry3d T = Eigen::Isometry3d::Identity();    //欧式变换的专用矩阵
+    T.rotate(rotation_vector);  // 按照rotation_vector进行旋转
+    T.pretranslate(Eigen::Vector3d(1,3,4)); // 把平移向量设成(1,3,4)
+    cout << "Transform matrix = \n" << T.matrix() << endl;
+
+    // 用变换矩阵进行坐标变换
+    Eigen::Vector3d v_transformed = T*v;    // p′ = Rp+t
+    cout << "v transformed = " << v_transformed.transpose() << endl;
+
+    // 四元数
+    // 可以直接把AngleAxis赋值给四元数，反之亦然
+    Eigen::Quaterniond q = Eigen::Quaterniond(rotation_vector);
+    cout << "quaternion = \n" << q.coeffs() << endl; // (x,y,z,w),w为实部
+
+    // 使用四元数旋转一个向量，使用重载的乘法即可
+    v_rotated = q*v;    // 数学上是qvq^{-1}
+    cout << "(1,0,0) after rotation = " << v_rotated.transpose() << endl;
+
+}
+```
+
+</details>
+
+
+
+## 8.SLAM相关
+
+实际当中，我们至少定义两个坐标系：**世界坐标系**和**相机坐标系**。在该定义下，设某个点在世界坐标系中坐标$\mathbf{p_\omega}$，在相机坐标系下为$\mathbf{p_c}$，那么：
+
+$$\mathbf{p_c}=T_{c\omega}\mathbf{p_\omega}$$
+
+这里$T_{c\omega}$表示世界坐标系到相机坐标系间的变换。或者我们可以用反过来的$ T_{c\omega} $：
+
+$$ \mathbf{p_\omega} = T_{\omega c}\mathbf{p_c}=T^{-1}_{c\omega}\mathbf{p_c}$$
+
+
+
+如果把上面两式的$\mathbf{p_c}$取成零向量，也就是相机坐标系中的原点，那么，此时的$\mathbf{p_\omega}$就是相机原点在世界坐标系下的坐标：
+
+$$\mathbf{p_\omega}=T_{\omega c}0=t_{\omega c}$$

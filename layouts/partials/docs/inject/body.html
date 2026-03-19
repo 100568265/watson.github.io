@@ -1,0 +1,50 @@
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.highlight').forEach(function (block) {
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.innerText = '复制';
+    block.style.position = 'relative';
+    block.appendChild(btn);
+
+    btn.addEventListener('click', function () {
+      // noClasses=true 时 td 没有 lntd 类名，用 table td:last-child 取代码列
+      var codeCell = block.querySelector('table td:last-child code') ||
+                     block.querySelector('code');
+      if (!codeCell) { return; }
+      // 克隆后移除行号 span（user-select:none），避免带入行号
+      var clone = codeCell.cloneNode(true);
+      clone.querySelectorAll('span').forEach(function (s) {
+        if (s.style.userSelect === 'none' || s.style.webkitUserSelect === 'none') {
+          s.remove();
+        }
+      });
+      var text = clone.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.innerText = '已复制!';
+        setTimeout(function () { btn.innerText = '复制'; }, 2000);
+      });
+    });
+  });
+});
+</script>
+<style>
+.copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 2px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.85);
+  color: #333;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+.highlight:hover .copy-btn {
+  opacity: 1;
+}
+</style>
